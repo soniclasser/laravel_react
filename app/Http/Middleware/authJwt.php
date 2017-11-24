@@ -21,7 +21,7 @@ class authJwt
     {
 
         try {
-           $user = JWTAuth::toUser($request->input('token'));
+           $user = JWTAuth::toUser($request->header('Authorization'));
        } catch (Exception $e) {
            return response()->json(['message' => $e->getMessage()],  $e->getStatusCode());
        }

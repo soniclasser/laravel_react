@@ -14,11 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => ['api','cors']], function () {
-    Route::post('auth/login', 'Auth\AuthController@login');
+    Route::post('/auth/login', 'Auth\AuthController@login');
 
     Route::group(['middleware' => 'jwt.auth'], function () {
-        Route::get('user', 'Auth\AuthController@getAuthUser');
-        Route::get('logout', 'Auth\AuthController@logout');
+        Route::get('user', 'User\UserController@getAuthUser');
+        Route::get('/auth/logout', 'Auth\AuthController@logout');
 
     });
 });

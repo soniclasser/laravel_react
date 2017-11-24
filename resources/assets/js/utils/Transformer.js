@@ -19,14 +19,15 @@ export default class Transformer {
    * @param param
    * @return {*}
    */
-  static fetch(param) {
+static fetch(param) {
     if (param && Array.isArray(param)) {
-      return Transformer.fetchCollection(param);
+        return Transformer.fetchCollection(param);
     } else if (param && typeof param === 'object') {
-      return Transformer.fetchObject(param);
+        return Transformer.fetchObject(param);
     }
-    return param
-  }
+
+    return param;
+}
 
   /**
    * Method used to transform a fetched collection
@@ -34,9 +35,9 @@ export default class Transformer {
    * @param param
    * @return [Array]
    */
-  static fetchCollection(param) {
+static fetchCollection(param) {
     return param.map(item => Transformer.fetch(item));
-  }
+}
 
   /**
    * Method used to transform a fetched object
@@ -44,14 +45,15 @@ export default class Transformer {
    * @param param
    * @return {{}}
    */
-  static fetchObject(param) {
+static fetchObject(param) {
     const data = {};
 
     _.forOwn(param, (value, key) => {
-      data[_.camelCase(key)] = Transformer.fetch(value);
+        data[_.camelCase(key)] = Transformer.fetch(value);
     });
+
     return data;
-  }
+}
 
   /**
    * Method used to transform a send data
@@ -59,14 +61,15 @@ export default class Transformer {
    * @param param
    * @return {*}
    */
-  static send(param) {
+static send(param) {
     if (param && Array.isArray(param)) {
-      return Transformer.sendCollection(param);
+        return Transformer.sendCollection(param);
     } else if (param && typeof param === 'object') {
-      return Transformer.sendObject(param);
+        return Transformer.sendObject(param);
     }
+
     return param
-  }
+}
 
   /**
    * Method used to transform a collection to be send
@@ -74,9 +77,9 @@ export default class Transformer {
    * @param param
    * @return [Array]
    */
-  static sendCollection(param) {
+static sendCollection(param) {
     return param.map(item => Transformer.send(item));
-  }
+}
 
   /**
    * Method used to transform a object to be send
@@ -84,14 +87,15 @@ export default class Transformer {
    * @param param
    * @returns {{}}
    */
-  static sendObject(param) {
+static sendObject(param) {
     const data = {};
 
     _.forOwn(param, (value, key) => {
-      data[_.snakeCase(key)] = Transformer.send(value);
+        data[_.snakeCase(key)] = Transformer.send(value);
     });
+
     return data;
-  }
+}
 
   /**
    * Method used to transform a form errors
@@ -102,17 +106,19 @@ export default class Transformer {
    * @param replaceStr String
    * @returns {{}}
    */
-  static resetValidationFields({ errors, replace = false, searchStr = '', replaceStr = '' }) {
+static resetValidationFields({ errors, replace = false, searchStr = '', replaceStr = '' }) {
     const data = {};
-    _.forOwn(errors, (value, key) => {
-      let index = '';
-      if (replace) {
-        index = _.camelCase(key.replace(searchStr, replaceStr));
-      } else {
-        index = _.camelCase(key);
-      }
-      data[index] = _.head(value);
-    });
+        _.forOwn(errors, (value, key) => {
+            let index = '';
+            if (replace) {
+                index = _.camelCase(key.replace(searchStr, replaceStr));
+            } else {
+                index = _.camelCase(key);
+            }
+
+            data[index] = _.head(value);
+        });
+
     return data;
   }
 }

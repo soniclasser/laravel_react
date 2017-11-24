@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\Auth;
 use Config;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use JWTAuth;
 use JWTAuthException;
 use App\User;
@@ -24,11 +23,14 @@ class AuthController extends Controller
                 $response = [
                     'message' => 'invalid email or password',
                 ];
-                $code = 404;
+                $code = 401;
             } else {
                 $response = [
-                    'token' => $token,
-                    'expires_in' => Config::get('jwt.ttl')
+                    'data' => [
+                        'token' => $token,
+                        'expires_in' => Config::get('jwt.ttl')
+                    ]
+
                 ];
             }
         } catch (JWTAuthException $e) {
@@ -39,12 +41,6 @@ class AuthController extends Controller
         }
 
         return response()->json($response, $code);
-    }
-
-    public function getAuthUser(Request $request)
-    {
-        $user = JWTAuth::toUser($request->token);
-        return response()->json(['data' => $user]);
     }
 
     public function logout(Request $request)
